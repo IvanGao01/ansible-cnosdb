@@ -1,0 +1,16 @@
+---
+- name: Install CnosDB Meta
+  yum:
+    name: {{ cnosdb_meta_rpm }}
+    state: present
+
+- name: Configure CnosDB Meta
+  template:
+    src: meta.conf.j2
+    dest: /etc/cnosdb/cnosdb-meta.conf
+
+- name: Start CnosDB Meta Service
+  systemd:
+    name: cnosdb-meta
+    state: started
+    enabled: true

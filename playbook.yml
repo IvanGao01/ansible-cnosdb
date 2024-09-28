@@ -1,0 +1,20 @@
+---
+- hosts: cnosdb_meta
+  tasks:
+    - name: Distribute CnosDB RPM package
+      copy:
+        src: ~/cnosdb-meta-2.3.5_enterprise-1.x86_64.rpm
+        dest: {{ cnosdb_meta_rpm }}
+
+  roles:
+    - cnosdb_meta
+
+- hosts: cnosdb_query_tskv
+  tasks:
+    - name: Distribute CnosDB RPM package
+      copy:
+        src: ~/cnosdb-2.3.5_enterprise-1.x86_64.rpm
+        dest: {{ cnosdb_query_tskv_rpm }}
+
+  roles:
+    - cnosdb_query_tskv
