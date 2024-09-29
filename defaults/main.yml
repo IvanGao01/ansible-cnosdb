@@ -1,0 +1,35 @@
+---
+# Role Settings
+cnosdb_node_types: ["meta", "data"]
+cnosdb_node_type: "meta" # By default, install node as a meta-node
+cnosdb_pkg_base_url: "https://repo.cnosdb.com/repo"
+cnosdb_version: "v2.4.2"
+cnosdb_configuration_dir: "/etc/cnosdb"
+cnosdb_manage_config: true
+cnosdb_cluster_auto_join: true
+cnosdb_meta_cluster_leader: meta1.cnosdb.com # The IP of the meta-node cluster leader
+cnosdb_users: []
+cnosdb_queries: []
+# Where the file will be installed on the remote host.
+cnosdb_enterprise_license_path: ""
+
+# cnosdb-meta.conf.j2 template options
+cnosdb_meta_id: 1
+cnosdb_meta_host: "meta1.cnosdb.com"
+cnosdb_meta_port: 8901
+cnosdb_meta_data_path: "/var/lib/cnosdb/meta"
+cnosdb_meta_grpc_enable_gzip: false
+cnosdb_meta_lmdb_max_map_size: 1073741824
+cnosdb_meta_heartbeat_interval: 3000
+cnosdb_meta_raft_logs_to_keep: 10000
+cnosdb_meta_install_snapshot_timeout: 3600000
+cnosdb_meta_send_append_entries_timeout: 5000
+cnosdb_meta_cluster_name: "cluster_xxx"
+cnosdb_meta_usage_schema_cache_size: 2097152
+cnosdb_meta_cluster_schema_cache_size: 2097152
+cnosdb_meta_system_database_replica: 3
+cnosdb_meta_log_level: "info"
+cnosdb_meta_log_path: "cnosdb_data/logs"
+cnosdb_meta_log_file_rotation: "daily"
+cnosdb_meta_heartbeat_heartbeat_recheck_interval: 300
+cnosdb_meta_heartbeat_heartbeat_expired_interval: 600

@@ -1,0 +1,7 @@
+meta_rpm_src: "~/cnosdb-meta-2.3.5_enterprise-1.x86_64.rpm"
+data_rpm_src: "~/license.json"
+
+
+cnosdb_meta_rpm: "/tmp/cnosdb-meta.rpm"
+cnosdb_query_rpm: "/tmp/cnosdb.rpm"
+

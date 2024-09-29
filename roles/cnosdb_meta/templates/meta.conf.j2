@@ -1,19 +1,25 @@
-id = {{ ansible_hostname }}
-host = "{{ ansible_hostname }}"
-port = 8901
-license_file = '/etc/cnosdb/license.json'
-snapshot_path = "/var/lib/cnosdb/meta/snapshot"
-journal_path = "/var/lib/cnosdb/meta/journal"
+id = {{ node_id }}
+host = "{{ host | default('127.0.0.1') }}"
+port = {{ port | default(8901) }}
+license_file = "/etc/cnosdb/license.json"
+snapshot_path = "{{ data_path | default('/var/lib/cnosdb/meta') }}/snapshot"
+journal_path = "{{ data_path | default('/var/lib/cnosdb/meta') }}/journal"
 snapshot_per_events = 500
-auto_migrate_vnodes_duration = 3600
+auto_migrate_vnodes_duration = 0
+
 [log]
-level = "info"
-path = "/var/log/cnosdb"
+level = "{{ log_level | default('info') }}"
+path = "{{ log_path | default('/var/log/cnosdb') }}"
+
 [meta_init]
-cluster_name = "cluster_xxx"
-admin_user = "root"
-system_tenant = "cnosdb"
-default_database = ["public", "usage_schema"]
+cluster_name = "{{ meta_init_cluster_name | default('cluster_xxx') }}"
+admin_user = "{{ meta_init_root | default('root') }}"
+system_tenant = "{{ meta_init_system_tenant | default('cnosdb') }}"
+default_database = [
+    "{{ default_db_1 | default('public') }}",
+    "{{ default_db_2 | default('usage_schema') }}"
+]
+
 [heartbeat]
-heartbeat_recheck_interval = 300
-heartbeat_expired_interval = 600
+heartbeat_recheck_interval = {{ heartbeat_heartbeat_recheck_interval | default(300) }}
+heartbeat_expired_interval = {{ heartbeat_heartbeat_expired_interval | default(600) }}

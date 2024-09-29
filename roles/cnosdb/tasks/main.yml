@@ -1,16 +1,16 @@
 ---
 - name: Install CnosDB Query
   yum:
-    name: {{ cnosdb_meta_rpm }}
+    name: "{{ cnosdb_meta_rpm }}"
     state: present
 
 - name: Configure CnosDB Query
   template:
     src: query_tskv.conf.j2
-    dest: /etc/cnosdb/query_tskv.conf
+    dest: /etc/cnosdb/cnosdb.conf
 
 - name: Start CnosDB Query Service
   systemd:
-    name: cnosdb-query
+    name: cnosdb
     state: started
     enabled: true

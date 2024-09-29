@@ -1,8 +1,20 @@
 ---
+
+- name: Gather all hostnames and node_ids
+  set_fact:
+    all_hosts: "{{ ansible_play_hosts | map('extract', hostvars, 'host') | list }}"
+    all_node_ids: "{{ ansible_play_hosts | map('extract', hostvars, 'node_id') | list }}"
+    first_host: "{{ hostvars[groups['cnosdb_meta'][0]].host }}"
+
+- name: Download CnosDB Meta RPM package
+  copy:
+    src: "{{ meta_rpm_src }}"
+    dest: "{{ cnosdb_meta_rpm }}"
+
 - name: Install CnosDB Meta
-  yum:
-    name: {{ cnosdb_meta_rpm }}
-    state: present
+  command: rpm -ivh "{{ cnosdb_meta_rpm }}"
+  args:
+    removes: "{{ cnosdb_meta_rpm }}"
 
 - name: Configure CnosDB Meta
   template:
@@ -14,3 +26,33 @@
     name: cnosdb-meta
     state: started
     enabled: true
+
+- name: Initialize the first host
+  uri:
+    url: "http://{{ first_host }}:{{ hostvars[inventory_hostname].port | default(8901) }}/init"
+    method: POST
+    body: '{}'
+    return_content: yes
+  register: init_result
+  when: hostvars[inventory_hostname].host == first_host
+
+- name: Add learner
+  uri:
+    url: "http://{{ first_host }}:{{ hostvars[inventory_hostname].port | default(8901) }}/add-learner"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: "{{ [hostvars[inventory_hostname].node_id, (hostvars[inventory_hostname].host ~ ':' ~ (hostvars[inventory_hostname].port | default(8901)))] | to_json }}"
+    return_content: yes
+  register: add_learner_result
+  when: hostvars[inventory_hostname].host != first_host
+
+- name: Change membership
+  uri:
+    url: "http://{{ first_host }}:{{ hostvars[inventory_hostname].port | default(8901) }}/change-membership"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: '{{ all_node_ids | to_json }}'
+    return_content: yes
+  when: hostvars[inventory_hostname].host == first_host

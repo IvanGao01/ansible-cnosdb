@@ -1,0 +1,21 @@
+cnosdb_meta:
+  hosts:
+    192.168.0.53:
+      node_id: 1
+      host: "meta1.cnosdb.com"
+    192.168.0.54:
+      node_id: 2
+      host: "meta2.cnosdb.com"
+    192.168.0.55:
+      node_id: 3
+      host: "meta3.cnosdb.com"
+
+#cnosdb:
+#  hosts:
+#    192.168.0.53:
+#      xxx: xxx1
+#    192.168.0.54:
+#      xxx: xxx2
+#    192.168.0.55:
+#      xxx: xxx3
+

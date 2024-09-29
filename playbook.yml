@@ -1,20 +1,29 @@
 ---
-- hosts: cnosdb_meta
+- hosts: all
   tasks:
-    - name: Distribute CnosDB RPM package
+    - name: Ensure /etc/cnosdb directory exists
+      file:
+        path: /etc/cnosdb
+        state: directory
+        mode: '755'
+
+    - name: Distribute license
       copy:
-        src: ~/cnosdb-meta-2.3.5_enterprise-1.x86_64.rpm
-        dest: {{ cnosdb_meta_rpm }}
+        src: ~/license.json
+        dest: /etc/cnosdb/license.json
+
+
+- hosts: cnosdb_meta
+  vars_files:
+    - vars.yml
 
   roles:
     - cnosdb_meta
 
-- hosts: cnosdb_query_tskv
-  tasks:
-    - name: Distribute CnosDB RPM package
-      copy:
-        src: ~/cnosdb-2.3.5_enterprise-1.x86_64.rpm
-        dest: {{ cnosdb_query_tskv_rpm }}
+#- hosts: cnosdb
+#  vars_files:
+#    - vars.yml
+#
+#  roles:
+#    - cnosdb
 
-  roles:
-    - cnosdb_query_tskv
